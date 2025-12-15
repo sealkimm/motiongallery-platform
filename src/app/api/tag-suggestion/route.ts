@@ -3,11 +3,21 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
+const MIN_TOTAL_LENGTH = 50;
+
 export const POST = async (req: Request) => {
   try {
     const body = await req.json();
     const { title, description, content } = body;
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const totalText = `${title}${description}${content}`.trim();
+
+    if (totalText.length < MIN_TOTAL_LENGTH) {
+      return NextResponse.json(
+        { error: '콘텐츠가 너무 짧아 태그를 생성할 수 없습니다.' },
+        { status: 400 },
+      );
+    }
 
     const prompt = `
 다음 애니메이션 콘텐츠를 분석해 관련 태그 5개를 추천해줘.

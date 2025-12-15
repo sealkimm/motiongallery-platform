@@ -57,7 +57,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
   const { tags, removeTag, handleKeyDown, setTags } = useTags(
     exampleData?.tags ?? [],
   );
-  const { generateTags, isGenerating } = useAITag();
+  const { generateTags, isGenerating, error, clearError } = useAITag();
   const { createExample, updateExample, isLoading } = useExample();
   const isEditMode = Boolean(exampleData);
 
@@ -86,6 +86,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
   }, [exampleData, form]);
 
   const handleAITag = async () => {
+    clearError();
     const values = form.getValues();
     const tags = await generateTags(values);
     setTags(tags);
@@ -224,6 +225,9 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
                   placeholder="태그를 엔터로 구분하여 입력하세요(최대 5개)"
                   onKeyDown={handleKeyDown}
                 />
+                {error && (
+                  <p className="mt-1 text-sm text-destructive">{error}</p>
+                )}
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
