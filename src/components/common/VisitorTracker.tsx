@@ -18,7 +18,7 @@ const VisitorTracker = () => {
     const expires = new Date();
     expires.setHours(23, 59, 59, 999);
 
-    document.cookie = `last_visit=${today}: expires=${expires.toUTCString()}; path=/`;
+    document.cookie = `last_visit=${today}; expires=${expires.toUTCString()}; path=/`;
   }, []);
 
   return null;
