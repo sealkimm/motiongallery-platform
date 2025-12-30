@@ -49,7 +49,7 @@ const LoginPage = () => {
     },
   });
 
-  const { execute, isLoading } = useSupabaseRequest<FormValues>({
+  const { execute, isLoading } = useSupabaseRequest<FormValues, unknown>({
     requestFn: async ({ email, password }) => {
       const result = await supabase.auth.signInWithPassword({
         email,

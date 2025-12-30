@@ -41,7 +41,17 @@ const useComment = ({
 }: UseCommentProps) => {
   // 생성
   const { execute: createComment, isLoading: isCreating } = useSupabaseRequest({
-    requestFn: async ({ content, exampleId, userId, parentId }) => {
+    requestFn: async ({
+      content,
+      exampleId,
+      userId,
+      parentId,
+    }: {
+      content: string;
+      exampleId: string;
+      userId: string;
+      parentId?: string;
+    }) => {
       const result = await supabase
         .from('comments')
         .insert({
@@ -62,7 +72,13 @@ const useComment = ({
 
   // 수정
   const { execute: updateComment, isLoading: isUpdating } = useSupabaseRequest({
-    requestFn: async ({ commentId, content }) => {
+    requestFn: async ({
+      commentId,
+      content,
+    }: {
+      commentId: string;
+      content: string;
+    }) => {
       const result = await supabase
         .from('comments')
         .update({ content })
@@ -82,7 +98,7 @@ const useComment = ({
 
   // 삭제
   const { execute: deleteComment, isLoading: isDeleting } = useSupabaseRequest({
-    requestFn: async ({ commentId }) => {
+    requestFn: async ({ commentId }: { commentId: string }) => {
       const result = await supabase
         .from('comments')
         .delete()

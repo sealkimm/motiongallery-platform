@@ -57,6 +57,7 @@ const MainHeader = () => {
 
   return (
     <>
+      <div className="hidden">{isLoading}</div>
       <header
         ref={headerRef}
         className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md"

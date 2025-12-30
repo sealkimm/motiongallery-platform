@@ -10,7 +10,7 @@ type Provider = 'google' | 'github' | 'kakao';
 const useSocialLogin = () => {
   const onClickSocialLogin = async (provider: Provider) => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/callback`,

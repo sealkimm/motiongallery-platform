@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Sparkles, Tag as TagIcon, X } from 'lucide-react';
+import { Loader2, Sparkles, Tag as TagIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import useAITag from '@/hooks/useAITag';

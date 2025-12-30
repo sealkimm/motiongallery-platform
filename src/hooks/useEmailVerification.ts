@@ -32,9 +32,9 @@ const useEmailVerification = (form: UseFormReturn<FormValues>) => {
   const [isVerified, setIsVerified] = useState(false);
   const [isCodeSent, setIsCodeSent] = useState(false);
 
-  const { execute: executeVerifyCode, isLoading } =
+  const { execute: executeVerifyCode } =
     //타입 정의 하는데가 있고 안하는데가 있다. 확인
-    useSupabaseRequest<VerifyCodeParams>({
+    useSupabaseRequest<VerifyCodeParams, unknown>({
       requestFn: async ({ email, code }) => {
         const { data, error } = await supabase
           .from('verification_codes')

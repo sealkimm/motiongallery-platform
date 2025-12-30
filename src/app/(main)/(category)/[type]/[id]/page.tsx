@@ -5,7 +5,7 @@ import { categories } from '@/features/category/data/categories';
 import { getExampleComments } from '@/features/comment/api/getExampleComments';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
-import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
+// import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
 import type { UserRelation } from '@/features/example/types/example';
 
 interface ExamplePageProps {
@@ -15,43 +15,43 @@ interface ExamplePageProps {
   };
 }
 
-const relatedExamples = [
-  {
-    id: 'asdsafafsf',
-    title: '관련 Example 1',
-    description: 'Example 1 description',
-    content: 'Example 1 content',
-    created_by: '123',
-    author: {
-      id: 'asdasd',
-      nickname: 'Example 1 Author',
-      avatar_url: 'https://example.com/avatar.jpg',
-    },
-    created_at: '2025-01-01',
-    thumbnail:
-      'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
-    type: 'gsap',
-    // like_count: 0,
-  },
+// const relatedExamples = [
+//   {
+//     id: 'asdsafafsf',
+//     title: '관련 Example 1',
+//     description: 'Example 1 description',
+//     content: 'Example 1 content',
+//     created_by: '123',
+//     author: {
+//       id: 'asdasd',
+//       nickname: 'Example 1 Author',
+//       avatar_url: 'https://example.com/avatar.jpg',
+//     },
+//     created_at: '2025-01-01',
+//     thumbnail:
+//       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
+//     type: 'gsap',
+//     // like_count: 0,
+//   },
 
-  {
-    id: 'dfh,mdflkbmfdknkm',
-    title: '관련 Example 2',
-    description: 'Example 2 description',
-    content: 'Example 2 content',
-    created_by: '123',
-    author: {
-      id: 'asdasd',
-      nickname: 'Example 2 Author',
-      avatar_url: 'https://example.com/avatar.jpg',
-    },
-    created_at: '2025-01-02',
-    thumbnail:
-      'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
-    type: 'gsap',
-    // like_count: 0,
-  },
-];
+//   {
+//     id: 'dfh,mdflkbmfdknkm',
+//     title: '관련 Example 2',
+//     description: 'Example 2 description',
+//     content: 'Example 2 content',
+//     created_by: '123',
+//     author: {
+//       id: 'asdasd',
+//       nickname: 'Example 2 Author',
+//       avatar_url: 'https://example.com/avatar.jpg',
+//     },
+//     created_at: '2025-01-02',
+//     thumbnail:
+//       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
+//     type: 'gsap',
+//     // like_count: 0,
+//   },
+// ];
 
 const ExamplePage = async ({ params }: ExamplePageProps) => {
   const { type, id } = await params;

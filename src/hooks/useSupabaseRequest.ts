@@ -27,7 +27,7 @@ interface useSupabaseRequestProps<TVars, TResult> {
   onError?: (error: PostgrestError | Error, vars: TVars) => void;
 }
 
-const useSupabaseRequest = <TVars = any, TResult = any>({
+const useSupabaseRequest = <TVars, TResult>({
   requestFn,
   onSuccess,
   onError,

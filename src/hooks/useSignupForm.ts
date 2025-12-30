@@ -17,6 +17,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { User } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
@@ -54,8 +55,19 @@ const useSignupForm = ({ onSuccess }: UseSignupFormProps) => {
     verifyEmailCode,
   } = useEmailVerification(form);
 
-  const { execute: executeSignUp, isLoading } = useSupabaseRequest({
-    requestFn: async ({ email, password, nickname }) => {
+  const { execute: executeSignUp, isLoading } = useSupabaseRequest<
+    { email: string; password: string; nickname: string },
+    { user: User | null }
+  >({
+    requestFn: async ({
+      email,
+      password,
+      nickname,
+    }: {
+      email: string;
+      password: string;
+      nickname: string;
+    }) => {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -63,7 +75,7 @@ const useSignupForm = ({ onSuccess }: UseSignupFormProps) => {
           data: { nickname },
         },
       });
-      return { data, error };
+      return { data: { user: data?.user ?? null }, error };
     },
     onSuccess: async ({ user }) => {
       if (user) {

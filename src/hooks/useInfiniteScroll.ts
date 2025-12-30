@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface UseInfiniteScrollProps<T> {
   initialData: T[];
   initialHasMore: boolean;
-  searchQuery: string;
+  searchQuery?: string;
   fetchFn: (page: number) => Promise<{
     data: T[];
     hasMore: boolean;
