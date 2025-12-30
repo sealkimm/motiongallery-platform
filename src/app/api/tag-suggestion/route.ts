@@ -5,6 +5,17 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
 const MIN_TOTAL_LENGTH = 50;
 
+const isMeaningfulText = (text: string) => {
+  const raw = (text ?? '').trim();
+  if (!raw) return false;
+
+  const noSpace = raw.replace(/\s/g, '');
+  const meaningfulOnly = noSpace.replace(/[^\p{L}\p{N}]/gu, '');
+  const ratio = meaningfulOnly.length / Math.max(noSpace.length, 1);
+
+  return ratio > 0.4;
+};
+
 export const POST = async (req: Request) => {
   try {
     const body = await req.json();
@@ -15,6 +26,13 @@ export const POST = async (req: Request) => {
     if (totalText.length < MIN_TOTAL_LENGTH) {
       return NextResponse.json(
         { error: '콘텐츠가 너무 짧아 태그를 생성할 수 없습니다.' },
+        { status: 400 },
+      );
+    }
+
+    if (!isMeaningfulText(totalText)) {
+      return NextResponse.json(
+        { error: '콘텐츠에 의미 있는 텍스트가 부족합니다.' },
         { status: 400 },
       );
     }
