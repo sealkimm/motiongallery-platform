@@ -7,6 +7,8 @@ import {
 import CategorySection from '@/features/home/components/CategorySection';
 import HeroSection from '@/features/home/components/HeroSection';
 
+export const dynamic = 'force-dynamic';
+
 const HomePage = async () => {
   const supabase = await createSupabaseServerClient();
   const {
