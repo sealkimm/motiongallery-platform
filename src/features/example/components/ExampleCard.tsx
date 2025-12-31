@@ -15,6 +15,8 @@ import { Card, CardContent } from '../../../components/ui/card';
 import { getCardStyles } from './ExampleCard.styles';
 import WriterInfo from './WriterInfo';
 
+const DEFAULT_THUMBNAIL = '/default-thumbnail.png';
+
 interface ExampleCardProps {
   category: Category;
   example: ExampleDetails;
@@ -52,11 +54,15 @@ const ExampleCard = ({
               className={`absolute bg-gradient-to-b ${category.color} inset-0 h-full w-full opacity-30 mix-blend-overlay`}
             ></div>
             <Image
-              src={example.thumbnail}
+              src={example.thumbnail || DEFAULT_THUMBNAIL}
               alt={example.title}
               width={isHorizontal ? 120 : 320}
               height={isHorizontal ? 120 : 160}
               className="h-full w-full object-cover"
+              unoptimized={example.thumbnail?.startsWith('/') ?? true}
+              onError={e => {
+                e.currentTarget.src = DEFAULT_THUMBNAIL;
+              }}
             />
           </div>
           <CardContent className={styles.content}>
