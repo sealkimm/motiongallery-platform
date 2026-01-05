@@ -27,10 +27,13 @@ const MyPage = () => {
   return (
     <div className="container h-screen">
       <div className="flex h-full flex-col items-center justify-center gap-4">
-        <div>내가 좋아요한 예제</div>
-        <div>내가 작성한 예제</div>
-        <div>내가 북마크한 예제</div>
-        <div>내가 쓴 댓글</div>
+        <h2 className="text-2xl">⚠️ 준비중인 페이지입니다.</h2>
+        <div className="rounded-md border p-4">
+          <div>내가 좋아요한 예제</div>
+          <div>내가 작성한 예제</div>
+          <div>내가 북마크한 예제</div>
+          <div>내가 쓴 댓글</div>
+        </div>
         <div>
           <Button variant="destructive" onClick={handleDeleteAccount}>
             회원탈퇴
