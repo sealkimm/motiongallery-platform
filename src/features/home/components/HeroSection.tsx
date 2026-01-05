@@ -1,10 +1,10 @@
 import * as motion from 'motion/react-client';
 
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
 
 const HeroSection = () => {
   return (
-    <div className="relative pb-20 pt-32">
+    <div className="relative pb-28 pt-48">
       <div
         className="absolute inset-0"
         style={{
@@ -25,7 +25,7 @@ const HeroSection = () => {
             Discover a collection of stunning animations and visual effects
             created using GSAP, Three.js, and CSS.
           </p>
-          <SearchBar />
+          {/* <SearchBar /> */}
         </motion.div>
       </div>
     </div>
