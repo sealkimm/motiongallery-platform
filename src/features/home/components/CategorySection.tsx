@@ -15,9 +15,14 @@ import type { ExampleDetails } from '@/features/example/types/example';
 interface CategorySectionProps {
   category: Category;
   examples: ExampleDetails[];
+  isFirstSection?: boolean;
 }
 
-const CategorySection = ({ category, examples }: CategorySectionProps) => {
+const CategorySection = ({
+  category,
+  examples,
+  isFirstSection = false,
+}: CategorySectionProps) => {
   const categorySectionRef = useRef(null);
   const isMobile = useIsMobile();
 
@@ -70,8 +75,13 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
       </div>
       <CardListAnimator direction="left">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {examples.map(item => (
-            <ExampleCard key={item.id} category={category} example={item} />
+          {examples.map((item, index) => (
+            <ExampleCard
+              key={item.id}
+              category={category}
+              example={item}
+              priority={isFirstSection && index < 4}
+            />
           ))}
         </div>
       </CardListAnimator>
