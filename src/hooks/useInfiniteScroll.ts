@@ -28,6 +28,7 @@ const useInfiniteScroll = <T>({
   const hasMoreRef = useRef(initialHasMore);
   const isLoadingRef = useRef(false);
   const fetchFnRef = useRef(fetchFn);
+  const requestVersionRef = useRef(0);
 
   useEffect(() => {
     fetchFnRef.current = fetchFn;
@@ -63,6 +64,8 @@ const useInfiniteScroll = <T>({
     }
 
     const reset = async () => {
+      const requestVersion = requestVersionRef.current + 1;
+      requestVersionRef.current = requestVersion;
       isLoadingRef.current = true;
       setIsLoading(true);
 
@@ -70,13 +73,17 @@ const useInfiniteScroll = <T>({
         const { data: queryData, hasMore: queryHasMore } =
           await fetchFnRef.current(0);
 
+        if (requestVersion !== requestVersionRef.current) return;
+
         setData(queryData);
         pageRef.current = 1;
         hasMoreRef.current = queryHasMore;
         setHasMore(queryHasMore);
       } finally {
-        isLoadingRef.current = false;
-        setIsLoading(false);
+        if (requestVersion === requestVersionRef.current) {
+          isLoadingRef.current = false;
+          setIsLoading(false);
+        }
       }
     };
 
@@ -86,6 +93,7 @@ const useInfiniteScroll = <T>({
   const fetchMore = useCallback(async () => {
     if (!hasMoreRef.current || isLoadingRef.current) return;
 
+    const requestVersion = requestVersionRef.current;
     isLoadingRef.current = true;
     setIsLoading(true);
 
@@ -96,13 +104,17 @@ const useInfiniteScroll = <T>({
         new Promise(resolve => setTimeout(resolve, 700)),
       ]);
 
+      if (requestVersion !== requestVersionRef.current) return;
+
       setData(prev => mergeUniqueData(prev, newData));
       pageRef.current += 1;
       hasMoreRef.current = moreAvailable;
       setHasMore(moreAvailable);
     } finally {
-      isLoadingRef.current = false;
-      setIsLoading(false);
+      if (requestVersion === requestVersionRef.current) {
+        isLoadingRef.current = false;
+        setIsLoading(false);
+      }
     }
   }, [mergeUniqueData]);
 
