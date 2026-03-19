@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
@@ -18,21 +18,9 @@ const MainHeader = () => {
   const pathname = usePathname();
   const headerRef = useRef(null);
   const { user, isLoading, signOut } = useAuth();
-  const [activeCategory, setActiveCategory] = useState('all');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const activeCategory = pathname === '/' ? 'all' : pathname.split('/')[1];
 
-  // 리팩토링
-
-  useEffect(() => {
-    if (pathname === '/') {
-      setActiveCategory('all');
-    } else {
-      const type = pathname.split('/')[1];
-      setActiveCategory(type);
-    }
-  }, [pathname]);
-
-  // 로딩부분 깔끔하게 다시 만들기
   useGSAP(
     () => {
       if (!headerRef.current) return;
@@ -46,14 +34,6 @@ const MainHeader = () => {
     },
     { scope: headerRef },
   );
-
-  // ✳️✳️✳️✳️ 로그인할때 에러때문에 넣은 로딩인데 이거때문에 모션 안되서 잠시 지움 -> 다시 확인 꼭 하기!!
-  // if (isLoading)
-  //   return (
-  //     <div className="flex h-full w-full items-center justify-center bg-green-500">
-  //       로딩중...
-  //     </div>
-  //   );
 
   return (
     <>
