@@ -38,7 +38,12 @@ import { formSchema, type FormValues } from '../formSchema';
 
 const MarkdownEditor = dynamic(
   () => import('@/components/editor/MarkdownEditor'),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-[300px] rounded-xl border border-white/10 bg-[rgb(21,26,37)]" />
+    ),
+  },
 );
 interface WriteFormProps {
   exampleData?: Example;
