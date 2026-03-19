@@ -19,49 +19,98 @@ const useInfiniteScroll = <T>({
   fetchFn,
 }: UseInfiniteScrollProps<T>) => {
   const [data, setData] = useState(initialData);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [isLoading, setIsLoading] = useState(false);
 
   const observerRef = useRef(null);
+  const hasMountedRef = useRef(false);
+  const pageRef = useRef(1);
+  const hasMoreRef = useRef(initialHasMore);
+  const isLoadingRef = useRef(false);
+  const fetchFnRef = useRef(fetchFn);
 
   useEffect(() => {
+    fetchFnRef.current = fetchFn;
+  }, [fetchFn]);
+
+  const mergeUniqueData = useCallback((prev: T[], next: T[]) => {
+    const merged = [...prev, ...next];
+    const seenIds = new Set<string>();
+
+    return merged.filter(item => {
+      if (
+        typeof item !== 'object' ||
+        item === null ||
+        !('id' in item) ||
+        typeof item.id !== 'string'
+      ) {
+        return true;
+      }
+
+      if (seenIds.has(item.id)) {
+        return false;
+      }
+
+      seenIds.add(item.id);
+      return true;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
     const reset = async () => {
+      isLoadingRef.current = true;
       setIsLoading(true);
 
-      const { data: queryData, hasMore: queryHasMore } = await fetchFn(0);
+      try {
+        const { data: queryData, hasMore: queryHasMore } =
+          await fetchFnRef.current(0);
 
-      setData(queryData);
-      setHasMore(queryHasMore);
-      setPage(1);
-      setIsLoading(false);
+        setData(queryData);
+        pageRef.current = 1;
+        hasMoreRef.current = queryHasMore;
+        setHasMore(queryHasMore);
+      } finally {
+        isLoadingRef.current = false;
+        setIsLoading(false);
+      }
     };
 
-    reset();
+    void reset();
   }, [searchQuery]);
 
   const fetchMore = useCallback(async () => {
-    if (!hasMore || isLoading) return;
+    if (!hasMoreRef.current || isLoadingRef.current) return;
 
+    isLoadingRef.current = true;
     setIsLoading(true);
 
-    // setTimeout 테스트용
-    const [{ data: newData, hasMore: moreAvailable }] = await Promise.all([
-      fetchFn(page),
-      new Promise(resolve => setTimeout(resolve, 700)),
-    ]);
+    try {
+      // setTimeout 테스트용
+      const [{ data: newData, hasMore: moreAvailable }] = await Promise.all([
+        fetchFnRef.current(pageRef.current),
+        new Promise(resolve => setTimeout(resolve, 700)),
+      ]);
 
-    setData(prev => [...prev, ...newData]);
-    setHasMore(moreAvailable);
-    setPage(prev => prev + 1);
-    setIsLoading(false);
-  }, [fetchFn, hasMore, isLoading, page]);
+      setData(prev => mergeUniqueData(prev, newData));
+      pageRef.current += 1;
+      hasMoreRef.current = moreAvailable;
+      setHasMore(moreAvailable);
+    } finally {
+      isLoadingRef.current = false;
+      setIsLoading(false);
+    }
+  }, [mergeUniqueData]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          fetchMore();
+        if (entries[0].isIntersecting) {
+          void fetchMore();
         }
       },
       { threshold: 0.1, rootMargin: '100px' },
@@ -78,7 +127,7 @@ const useInfiniteScroll = <T>({
         observer.unobserve(currentTarget);
       }
     };
-  }, [fetchMore, hasMore, isLoading]);
+  }, [fetchMore]);
 
   return {
     data,
