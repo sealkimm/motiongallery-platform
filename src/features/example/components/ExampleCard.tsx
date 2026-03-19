@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -21,16 +22,21 @@ interface ExampleCardProps {
   category: Category;
   example: ExampleDetails;
   layout?: 'horizontal' | 'vertical';
+  priority?: boolean;
 }
 
 const ExampleCard = ({
   category,
   example,
   layout = 'vertical',
+  priority = false,
 }: ExampleCardProps) => {
   const router = useRouter();
   const interactions = useExampleInteractions({ example });
   const isHorizontal = layout === 'horizontal';
+  const [imageSrc, setImageSrc] = useState(
+    example.thumbnail || DEFAULT_THUMBNAIL,
+  );
 
   const handleComment = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -54,14 +60,22 @@ const ExampleCard = ({
               className={`absolute bg-gradient-to-b ${category.color} inset-0 h-full w-full opacity-30 mix-blend-overlay`}
             ></div>
             <Image
-              src={example.thumbnail || DEFAULT_THUMBNAIL}
+              src={imageSrc}
               alt={example.title}
               width={isHorizontal ? 120 : 320}
               height={isHorizontal ? 120 : 160}
+              sizes={
+                isHorizontal
+                  ? '(max-width: 768px) 33vw, 120px'
+                  : '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw'
+              }
               className="h-full w-full object-cover"
-              unoptimized={example.thumbnail?.startsWith('/') ?? true}
+              priority={priority}
+              loading={priority ? 'eager' : 'lazy'}
               onError={e => {
-                e.currentTarget.src = DEFAULT_THUMBNAIL;
+                if (imageSrc !== DEFAULT_THUMBNAIL) {
+                  setImageSrc(DEFAULT_THUMBNAIL);
+                }
               }}
             />
           </div>
