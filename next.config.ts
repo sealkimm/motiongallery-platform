@@ -6,14 +6,31 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 7,
-    // domains: [''],
-    domains: [
-      'fftdjzgcvucsqrqpdgrf.supabase.co',
-      'cdn.crowdpic.net',
-      'shots.codepen.io',
-      'codesandbox.io',
-      'img.youtube.com',
-      'vumbnail.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fftdjzgcvucsqrqpdgrf.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.crowdpic.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'shots.codepen.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'codesandbox.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vumbnail.com',
+      },
     ],
   },
 };

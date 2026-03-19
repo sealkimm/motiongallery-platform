@@ -72,7 +72,7 @@ const ExampleCard = ({
               className="h-full w-full object-cover"
               priority={priority}
               loading={priority ? 'eager' : 'lazy'}
-              onError={e => {
+              onError={() => {
                 if (imageSrc !== DEFAULT_THUMBNAIL) {
                   setImageSrc(DEFAULT_THUMBNAIL);
                 }
