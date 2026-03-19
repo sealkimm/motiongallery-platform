@@ -54,7 +54,7 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
             {category.title}
           </h2>
           <p className="text-xl text-gray-400">
-            Smooth animations powered by GreenSock Animation Platform
+            {category.description}
           </p>
         </div>
         <Button
@@ -63,7 +63,7 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
           className={`hidden md:flex ${category.textColor}`}
         >
           <Link href={`/${category.type}`}>
-            View All
+            전체 보기
             <ChevronRight size={16} />
           </Link>
         </Button>
@@ -82,7 +82,7 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
           className={`${category.textColor} border text-center ${category.borderColor} h-auto rounded-full px-6 py-3`}
         >
           <Link href={`/${category.type}`}>
-            View All
+            전체 보기
             <ChevronRight size={16} />
           </Link>
         </Button>
