@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
+import { useInitialLoad } from '@/providers/InitialLoadProvider';
 
 import { gsap, useGSAP } from '@/lib/gsap';
 import VisitorStats from '@/components/common/VisitorStats';
@@ -18,21 +19,34 @@ const MainHeader = () => {
   const pathname = usePathname();
   const headerRef = useRef(null);
   const { user, isLoading, signOut } = useAuth();
+  const { isInitialLoadComplete } = useInitialLoad();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const activeCategory = pathname === '/' ? 'all' : pathname.split('/')[1];
 
   useGSAP(
     () => {
-      if (!headerRef.current) return;
+      if (!headerRef.current || !isInitialLoadComplete) return;
 
-      gsap.from(headerRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-      });
+      gsap.fromTo(
+        headerRef.current,
+        {
+          y: -100,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+        },
+      );
     },
-    { scope: headerRef },
+    {
+      scope: headerRef,
+      dependencies: [isInitialLoadComplete],
+      revertOnUpdate: true,
+    },
   );
 
   return (
@@ -40,7 +54,9 @@ const MainHeader = () => {
       <div className="hidden">{isLoading}</div>
       <header
         ref={headerRef}
-        className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md"
+        className={`fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md ${
+          isInitialLoadComplete ? '' : '-translate-y-24 opacity-0'
+        }`}
       >
         <div className="container relative flex items-center justify-between py-4">
           <div className="flex items-center gap-4">

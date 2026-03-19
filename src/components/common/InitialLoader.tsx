@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
+import { useInitialLoad } from '@/providers/InitialLoadProvider';
+
 const MIN_VISIBLE_MS = 900;
 const EXIT_DURATION_MS = 520;
+const CONTENT_REVEAL_OVERLAP_MS = 180;
 
 const waitForNextPaint = () =>
   new Promise<void>(resolve => {
@@ -15,6 +18,7 @@ const waitForNextPaint = () =>
 const InitialLoader = () => {
   const [isLeaving, setIsLeaving] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
+  const { completeInitialLoad } = useInitialLoad();
 
   useEffect(() => {
     const startedAt = performance.now();
@@ -22,6 +26,7 @@ const InitialLoader = () => {
 
     let cancelled = false;
     let leaveTimer: ReturnType<typeof setTimeout> | null = null;
+    let revealTimer: ReturnType<typeof setTimeout> | null = null;
     let unmountTimer: ReturnType<typeof setTimeout> | null = null;
 
     const finishLoading = async () => {
@@ -35,8 +40,14 @@ const InitialLoader = () => {
         setIsLeaving(true);
         document.body.dataset.initialLoading = 'false';
 
+        revealTimer = setTimeout(() => {
+          if (!cancelled) completeInitialLoad();
+        }, CONTENT_REVEAL_OVERLAP_MS);
+
         unmountTimer = setTimeout(() => {
-          if (!cancelled) setIsMounted(false);
+          if (!cancelled) {
+            setIsMounted(false);
+          }
         }, EXIT_DURATION_MS);
       }, remaining);
     };
@@ -53,6 +64,7 @@ const InitialLoader = () => {
       window.removeEventListener('load', finishLoading);
 
       if (leaveTimer) clearTimeout(leaveTimer);
+      if (revealTimer) clearTimeout(revealTimer);
       if (unmountTimer) clearTimeout(unmountTimer);
     };
   }, []);
