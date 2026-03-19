@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 
+import { useInitialLoad } from '@/providers/InitialLoadProvider';
 import { gsap, useGSAP } from '@/lib/gsap';
 import useIsMobile from '@/hooks/useIsMobile';
 
@@ -20,10 +21,11 @@ const FROM_MAP = {
 const CardListAnimator = ({ direction, children }: CardListAnimatorProps) => {
   const isMobile = useIsMobile();
   const wrapperRef = useRef(null);
+  const { isInitialLoadComplete } = useInitialLoad();
 
   useGSAP(
     () => {
-      if (!wrapperRef.current) return;
+      if (!wrapperRef.current || !isInitialLoadComplete) return;
 
       const cards = gsap.utils.toArray('.example-card', wrapperRef.current);
       const from = FROM_MAP[direction];
@@ -42,9 +44,19 @@ const CardListAnimator = ({ direction, children }: CardListAnimatorProps) => {
         },
       });
     },
-    { dependencies: [isMobile], revertOnUpdate: true },
+    {
+      dependencies: [isMobile, isInitialLoadComplete],
+      revertOnUpdate: true,
+    },
   );
-  return <div ref={wrapperRef}>{children}</div>;
+  return (
+    <div
+      ref={wrapperRef}
+      className={isInitialLoadComplete ? '' : 'translate-y-12 opacity-0'}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default CardListAnimator;

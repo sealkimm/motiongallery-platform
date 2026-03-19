@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
+import { useInitialLoad } from '@/providers/InitialLoadProvider';
 import { gsap, useGSAP } from '@/lib/gsap';
 import useIsMobile from '@/hooks/useIsMobile';
 import CardListAnimator from '@/components/animations/CardListAnimator';
@@ -25,32 +26,44 @@ const CategorySection = ({
 }: CategorySectionProps) => {
   const categorySectionRef = useRef(null);
   const isMobile = useIsMobile();
+  const { isInitialLoadComplete } = useInitialLoad();
 
   useGSAP(
     () => {
-      if (!categorySectionRef.current) return;
+      if (!categorySectionRef.current || !isInitialLoadComplete) return;
       const startValue = isMobile ? 'top 90%' : 'top 80%';
 
-      gsap.from(categorySectionRef.current, {
-        scrollTrigger: {
-          trigger: categorySectionRef.current,
-          start: startValue,
+      gsap.fromTo(
+        categorySectionRef.current,
+        {
+          y: 100,
+          opacity: 0,
         },
-        y: 100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-      });
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: categorySectionRef.current,
+            start: startValue,
+          },
+        },
+      );
     },
     {
       scope: categorySectionRef,
-      dependencies: [isMobile],
+      dependencies: [isMobile, isInitialLoadComplete],
       revertOnUpdate: true,
     },
   );
 
   return (
-    <div ref={categorySectionRef}>
+    <div
+      ref={categorySectionRef}
+      className={isInitialLoadComplete ? '' : 'translate-y-24 opacity-0'}
+    >
       <div className="mb-8 flex items-center justify-between">
         <div className="flex flex-col gap-3">
           <h2

@@ -1,8 +1,13 @@
+'use client';
+
 import * as motion from 'motion/react-client';
+import { useInitialLoad } from '@/providers/InitialLoadProvider';
 
 // import SearchBar from './SearchBar';
 
 const HeroSection = () => {
+  const { isInitialLoadComplete } = useInitialLoad();
+
   return (
     <div className="relative pb-28 pt-48">
       <div
@@ -14,9 +19,13 @@ const HeroSection = () => {
       ></div>
       <div className="container relative max-w-4xl text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          initial={false}
+          animate={
+            isInitialLoadComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+          }
+          transition={
+            isInitialLoadComplete ? { duration: 0.8, delay: 0.2 } : { duration: 0 }
+          }
         >
           <h1 className="gradient-text mb-6 text-4xl font-bold md:text-6xl">
             모션 레퍼런스를 공유하는 공간
