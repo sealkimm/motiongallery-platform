@@ -20,7 +20,10 @@ import { supabase } from '@/lib/supabase/client';
 import type { ExampleDetails } from '@/features/example/types/example';
 
 interface UseExampleInteractionsProps {
-  example: ExampleDetails;
+  example: Pick<
+    ExampleDetails,
+    'id' | 'likeCount' | 'isLiked' | 'isBookmarked'
+  >;
 }
 
 const useExampleInteractions = ({ example }: UseExampleInteractionsProps) => {

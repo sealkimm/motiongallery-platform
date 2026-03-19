@@ -1,19 +1,13 @@
-'use client';
-
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
-import * as motion from 'motion/react-client';
 
-import useExampleInteractions from '@/hooks/useExampleInteractions';
 import type { Category } from '@/features/category/types/category';
-import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 import type { ExampleDetails } from '@/features/example/types/example';
 
 import { Card, CardContent } from '../../../components/ui/card';
 import { getCardStyles } from './ExampleCard.styles';
+import ExampleCardInteractiveActions from './ExampleCardInteractiveActions';
 import WriterInfo from './WriterInfo';
 
 const DEFAULT_THUMBNAIL = '/default-thumbnail.png';
@@ -31,28 +25,25 @@ const ExampleCard = ({
   layout = 'vertical',
   priority = false,
 }: ExampleCardProps) => {
-  const router = useRouter();
-  const interactions = useExampleInteractions({ example });
   const isHorizontal = layout === 'horizontal';
-  const [imageSrc, setImageSrc] = useState(
-    example.thumbnail || DEFAULT_THUMBNAIL,
-  );
-
-  const handleComment = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    router.push(`/${example.type}/${example.id}#comment`);
+  const styles = getCardStyles(isHorizontal);
+  const imageSrc = example.thumbnail || DEFAULT_THUMBNAIL;
+  const interactiveExample = {
+    id: example.id,
+    type: example.type,
+    likeCount: example.likeCount,
+    commentCount: example.commentCount,
+    isLiked: example.isLiked,
+    isBookmarked: example.isBookmarked,
   };
 
-  const styles = getCardStyles(isHorizontal);
-
   return (
-    <Link href={`/${example.type}/${example.id}`} className="example-card">
-      <motion.div
-        whileHover={{ y: isHorizontal ? -5 : -10, scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className={`bg-gradient-to-br ${category.color} h-full rounded-xl p-[2px]`}
+    <Link
+      href={`/${example.type}/${example.id}`}
+      className="example-card group block"
+    >
+      <div
+        className={`bg-gradient-to-br ${category.color} h-full rounded-xl p-[2px] transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-[1.02] group-active:scale-[0.98]`}
       >
         <Card className={styles.container}>
           <div className={styles.imageWrapper}>
@@ -72,11 +63,6 @@ const ExampleCard = ({
               className="h-full w-full object-cover"
               priority={priority}
               loading={priority ? 'eager' : 'lazy'}
-              onError={() => {
-                if (imageSrc !== DEFAULT_THUMBNAIL) {
-                  setImageSrc(DEFAULT_THUMBNAIL);
-                }
-              }}
             />
           </div>
           <CardContent className={styles.content}>
@@ -91,11 +77,7 @@ const ExampleCard = ({
               <>
                 <WriterInfo author={example.author} variant="card" />
                 <div className="mt-3 flex items-center justify-between">
-                  <ExampleCardActions
-                    {...interactions}
-                    commentCount={example.commentCount}
-                    handleComment={handleComment}
-                  />
+                  <ExampleCardInteractiveActions example={interactiveExample} />
                   <div className={category.textColor}>
                     <ArrowRight size={20} />
                   </div>
@@ -104,7 +86,7 @@ const ExampleCard = ({
             )}
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
     </Link>
   );
 };

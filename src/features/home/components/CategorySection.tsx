@@ -48,6 +48,7 @@ const CategorySection = ({
           scrollTrigger: {
             trigger: categorySectionRef.current,
             start: startValue,
+            once: true,
           },
         },
       );
@@ -63,6 +64,7 @@ const CategorySection = ({
     <div
       ref={categorySectionRef}
       className={isInitialLoadComplete ? '' : 'translate-y-24 opacity-0'}
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '720px' }}
     >
       <div className="mb-8 flex items-center justify-between">
         <div className="flex flex-col gap-3">
@@ -87,15 +89,17 @@ const CategorySection = ({
         </Button>
       </div>
       <CardListAnimator direction="left">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {examples.map((item, index) => (
-            <ExampleCard
-              key={item.id}
-              category={category}
-              example={item}
-              priority={isFirstSection && index < 4}
-            />
-          ))}
+        <div className="px-3 md:px-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {examples.map((item, index) => (
+              <ExampleCard
+                key={item.id}
+                category={category}
+                example={item}
+                priority={isFirstSection && index < 4}
+              />
+            ))}
+          </div>
         </div>
       </CardListAnimator>
       <div className={`mt-8 flex justify-center md:hidden`}>
