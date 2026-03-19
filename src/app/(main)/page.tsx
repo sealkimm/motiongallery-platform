@@ -30,11 +30,12 @@ const HomePage = async () => {
       <HeroSection />
       <div className="relative overflow-hidden pb-40">
         <div className="container flex flex-col gap-24">
-          {examplesByCategory.map(category => (
+          {examplesByCategory.map((category, index) => (
             <CategorySection
               key={category.id}
               category={category}
               examples={category.examples}
+              isFirstSection={index === 0}
             />
           ))}
         </div>
