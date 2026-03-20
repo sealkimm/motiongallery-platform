@@ -16,11 +16,11 @@ export const transformExampleData = (
   const bookmarkedExampleIdSet = new Set(bookmarkedExampleIds);
 
   const result = data.map(
-    ({ users, comments, likes, ...item }) => ({
+    ({ author, comment_count, like_count, ...item }) => ({
       ...item,
-      author: users,
-      commentCount: comments?.[0]?.count ?? 0,
-      likeCount: likes?.[0]?.count ?? 0,
+      author,
+      commentCount: comment_count ?? 0,
+      likeCount: like_count ?? 0,
       isLiked: likedExampleIdSet.has(item.id),
       isBookmarked: bookmarkedExampleIdSet.has(item.id),
     }),

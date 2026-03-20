@@ -23,7 +23,22 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     supabase.auth.getUser(),
     supabase
       .from('examples')
-      .select(`*, author:users(id, nickname, avatar_url), likes(count)`)
+      .select(
+        `
+          id,
+          type,
+          title,
+          description,
+          content,
+          created_by,
+          created_at,
+          thumbnail,
+          tags,
+          comment_count,
+          like_count,
+          author:users(id, nickname, avatar_url)
+        `,
+      )
       .eq('id', id)
       .eq('type', type)
       .single(),
@@ -71,7 +86,8 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const example = rawExample && {
     ...rawExample,
-    likeCount: rawExample.likes?.[0]?.count ?? 0,
+    commentCount: rawExample.comment_count ?? 0,
+    likeCount: rawExample.like_count ?? 0,
     isLiked,
     isBookmarked,
   };
@@ -89,7 +105,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
   }
 
   const isAuthor = user?.id === example?.author.id;
-  const { data: comments, hasMore, totalCount } = commentResult;
+  const { data: comments, hasMore } = commentResult;
 
   return (
     <div className="pb-20 pt-24">
@@ -106,7 +122,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
             exampleId={id}
             comments={comments}
             hasMore={hasMore}
-            totalCount={totalCount}
+            totalCount={example.commentCount}
           />
         </ContentAnimator>
       </div>

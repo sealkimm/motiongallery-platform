@@ -16,20 +16,22 @@ export const getExampleComments = async ({
   const supabase = await createSupabaseServerClient();
 
   const from = page * pageSize;
-  const to = from + pageSize - 1;
+  const to = from + pageSize;
 
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from('comments')
-    .select('*, author:users(id, nickname, avatar_url)', { count: 'exact' })
+    .select('id, content, example_id, user_id, parent_id, created_at, author:users(id, nickname, avatar_url)')
     .eq('example_id', id)
     .order('created_at', { ascending: false })
     .range(from, to);
 
   if (error) throw new Error(`댓글을 불러오지 못했습니다: ${error.message}`);
 
+  const pagedData = (data ?? []).slice(0, pageSize);
+
   return {
-    data,
-    hasMore: (count || 0) > to + 1,
-    totalCount: count || 0,
+    data: pagedData,
+    hasMore: (data?.length ?? 0) > pageSize,
+    totalCount: pagedData.length,
   };
 };
