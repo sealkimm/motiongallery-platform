@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
-import { useInitialLoad } from '@/providers/InitialLoadProvider';
 import { gsap, useGSAP } from '@/lib/gsap';
 import useIsMobile from '@/hooks/useIsMobile';
 import CardListAnimator from '@/components/animations/CardListAnimator';
@@ -26,11 +25,10 @@ const CategorySection = ({
 }: CategorySectionProps) => {
   const categorySectionRef = useRef(null);
   const isMobile = useIsMobile();
-  const { isInitialLoadComplete } = useInitialLoad();
 
   useGSAP(
     () => {
-      if (!categorySectionRef.current || !isInitialLoadComplete) return;
+      if (!categorySectionRef.current) return;
       const startValue = isMobile ? 'top 90%' : 'top 80%';
 
       gsap.fromTo(
@@ -44,7 +42,6 @@ const CategorySection = ({
           opacity: 1,
           duration: 1,
           ease: 'power3.out',
-          clearProps: 'transform,opacity',
           scrollTrigger: {
             trigger: categorySectionRef.current,
             start: startValue,
@@ -55,7 +52,7 @@ const CategorySection = ({
     },
     {
       scope: categorySectionRef,
-      dependencies: [isMobile, isInitialLoadComplete],
+      dependencies: [isMobile],
       revertOnUpdate: true,
     },
   );
@@ -63,7 +60,7 @@ const CategorySection = ({
   return (
     <div
       ref={categorySectionRef}
-      className={isInitialLoadComplete ? '' : 'translate-y-24 opacity-0'}
+      className="translate-y-24 opacity-0"
       style={{ contentVisibility: 'auto', containIntrinsicSize: '720px' }}
     >
       <div className="mb-8 flex items-center justify-between">

@@ -3,7 +3,6 @@
 // 위치 다시...
 import { useRef } from 'react';
 
-import { useInitialLoad } from '@/providers/InitialLoadProvider';
 import { gsap, useGSAP } from '@/lib/gsap';
 
 interface ContentAnimatorProps {
@@ -12,11 +11,10 @@ interface ContentAnimatorProps {
 
 const ContentAnimator = ({ children }: ContentAnimatorProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const { isInitialLoadComplete } = useInitialLoad();
 
   useGSAP(
     () => {
-      if (!contentRef.current || !isInitialLoadComplete) return;
+      if (!contentRef.current) return;
 
       gsap.from(contentRef.current.children, {
         y: 50,
@@ -28,20 +26,11 @@ const ContentAnimator = ({ children }: ContentAnimatorProps) => {
     },
     {
       scope: contentRef,
-      dependencies: [isInitialLoadComplete],
       revertOnUpdate: true,
     },
   );
-  return (
-    <div
-      ref={contentRef}
-      className={`relative mx-auto max-w-5xl ${
-        isInitialLoadComplete ? '' : 'translate-y-12 opacity-0'
-      }`}
-    >
-      {children}
-    </div>
-  );
+
+  return <div ref={contentRef} className="relative mx-auto max-w-5xl">{children}</div>;
 };
 
 export default ContentAnimator;

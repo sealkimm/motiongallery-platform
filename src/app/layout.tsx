@@ -4,10 +4,8 @@ import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 
 import { AuthProvider } from '@/providers/AuthProvider';
-import InitialLoadProvider from '@/providers/InitialLoadProvider';
 
 import FloatingAddButton from '@/components/button/FloatingAddButton';
-import InitialLoader from '@/components/common/InitialLoader';
 import VisitorTracker from '@/components/common/VisitorTracker';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -31,19 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <InitialLoadProvider>
-          <AuthProvider>
-            <Theme>
-              <InitialLoader />
-              <VisitorTracker />
-              <Toaster position="top-center" />
-              <div className="flex min-h-screen flex-col bg-background text-foreground">
-                {children}
-              </div>
-              <FloatingAddButton />
-            </Theme>
-          </AuthProvider>
-        </InitialLoadProvider>
+        <AuthProvider>
+          <Theme>
+            <VisitorTracker />
+            <Toaster position="top-center" />
+            <div className="flex min-h-screen flex-col bg-background text-foreground">
+              {children}
+            </div>
+            <FloatingAddButton />
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
