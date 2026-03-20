@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -21,44 +22,39 @@ export const GET = async () => {
 
 export const POST = async () => {
   const supabase = await createSupabaseServerClient();
-  const today = new Date().toISOString().slice(0, 10);
+  const cookieStore = await cookies();
+  const existingVisitorKey = cookieStore.get('visitor_key')?.value ?? null;
 
-  // 기존 카운트
-  const { data: stats } = await supabase
-    .from('visitors')
-    .select('*')
-    .eq('id', 1)
-    .single();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
-  let totalVisits = stats.total_visits;
-  let todayVisits = stats.today_visits;
-  const savedDate = stats.today_date;
-
-  // 날짜 바뀌면 초기화
-  if (savedDate !== today) {
-    todayVisits = 0;
+  if (authError) {
+    return NextResponse.json({ error: authError.message }, { status: 500 });
   }
 
-  // 카운팅 증가
-  totalVisits += 1;
-  todayVisits += 1;
+  const visitorKey = user?.id ? null : (existingVisitorKey ?? crypto.randomUUID());
 
-  // 수파베이스 업데이트
-  const { data, error } = await supabase
-    .from('visitors')
-    .update({
-      total_visits: totalVisits,
-      today_visits: todayVisits,
-      today_date: today,
-      updated_at: new Date(),
-    })
-    .eq('id', 1)
-    .select()
-    .single();
+  const { data, error } = await supabase.rpc('track_visitor', {
+    p_visitor_key: visitorKey,
+  });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data);
+  const response = NextResponse.json(data);
+
+  if (!user?.id && !existingVisitorKey && visitorKey) {
+    response.cookies.set('visitor_key', visitorKey, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 365,
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+  }
+
+  return response;
 };
