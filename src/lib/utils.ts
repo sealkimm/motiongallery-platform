@@ -15,7 +15,7 @@ export const removeAllowTransparency = (value: string) => {
 // markdown preview에서 실행 불가능한 script 태그를 제거
 export const removeScriptTags = (value: string) => {
   return value
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis, '')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<script\b[^>]*\/>/gi, '');
 };
 
