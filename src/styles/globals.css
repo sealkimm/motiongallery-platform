@@ -125,7 +125,8 @@ body {
 }
 
 .floating-add-button-enter {
-  animation: floating-add-button-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+  animation: floating-add-button-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s
+    both;
   transform-origin: center;
 }
 
@@ -200,6 +201,7 @@ body {
   background-color: rgb(20, 23, 34);
   border-radius: 0.7rem;
   padding: 1.5rem;
+  color: #ddd;
 }
 .md-viewer-container .wmde-markdown h1 {
   border: 0;

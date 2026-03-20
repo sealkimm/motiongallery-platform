@@ -172,7 +172,7 @@ const CommentItem = ({
                     onClick={() => {
                       setShowReplies(!showReplies);
                     }}
-                    className="text-xs text-gray-400 hover:text-white"
+                    className="text-xs text-[rgb(84_139_209)] hover:text-[rgb(84_139_209)]"
                   >
                     <ChevronDown size={14} /> 답글 {replies.length}개
                   </Button>
