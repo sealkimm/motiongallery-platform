@@ -33,8 +33,8 @@ export const categories: Category[] = [
     type: 'other',
     title: 'Other',
     description: '그 외 다양한 방식으로 구현한 모션 예제를 확인해보세요.',
-    color: 'from-gray-500 to-gray-500',
-    textColor: 'text-gray-500',
-    borderColor: 'border-gray-500',
+    color: 'from-gray-400 to-zinc-300',
+    textColor: 'text-gray-300',
+    borderColor: 'border-gray-300',
   },
 ];

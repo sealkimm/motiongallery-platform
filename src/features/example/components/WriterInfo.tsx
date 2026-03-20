@@ -46,7 +46,7 @@ const WriterInfo = ({
           {author.nickname}
         </p>
         {isFull && createdAt && (
-          <p className="text-xs text-gray-500">{formatDate(createdAt)}</p>
+          <p className="text-xs text-gray-400">{formatDate(createdAt)}</p>
         )}
       </div>
     </div>

@@ -21,7 +21,11 @@ const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          aria-label={`${user.nickname} 메뉴 열기`}
+          className="flex items-center gap-4"
+        >
           <Avatar className="h-8 w-8 border-2 border-purple-500">
             <AvatarImage src={user.avatar_url} alt={user.nickname} />
             <AvatarFallback>
@@ -29,7 +33,7 @@ const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
             </AvatarFallback>
           </Avatar>
           <span className="hidden text-sm md:block">{user.nickname}</span>
-          <ChevronDown size={16} className="hidden md:block" />
+          <ChevronDown size={16} aria-hidden="true" className="hidden md:block" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 border-gray-800 bg-gray-900">
