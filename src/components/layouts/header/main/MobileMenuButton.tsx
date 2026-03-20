@@ -13,6 +13,9 @@ const MobileMenuButton = ({ isOpen, onToggle }: MobileMenuButtonProps) => {
       variant="ghost"
       size="icon"
       onClick={onToggle}
+      aria-label={isOpen ? '모바일 메뉴 닫기' : '모바일 메뉴 열기'}
+      aria-expanded={isOpen}
+      aria-controls="mobile-navigation"
       className="ml-4 md:hidden"
     >
       {isOpen ? <X size={24} /> : <Menu size={24} />}

@@ -17,7 +17,7 @@ const CategoryNav = ({ activeCategory }: CategoryNavProps) => {
         className={cn(
           'transition-colors',
           'hover:text-foreground',
-          activeCategory === 'all' ? 'text-foreground' : 'text-gray-500',
+          activeCategory === 'all' ? 'text-foreground' : 'text-gray-300',
         )}
       >
         <Link href={`/`}>All</Link>
@@ -32,7 +32,7 @@ const CategoryNav = ({ activeCategory }: CategoryNavProps) => {
             'hover:text-foreground',
             activeCategory === category.type
               ? 'text-foreground'
-              : 'text-gray-500',
+              : 'text-gray-300',
           )}
         >
           <Link href={`/${category.type}`}>{category.title}</Link>

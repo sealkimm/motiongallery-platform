@@ -100,8 +100,8 @@ const CommentItem = ({
             <span className="text-sm font-medium">
               {comment.author.nickname}
             </span>
-            <span className="text-xs text-gray-500">•</span>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-400">•</span>
+            <span className="text-xs text-gray-400">
               {formatDate(comment.created_at)}
             </span>
           </div>
@@ -111,6 +111,7 @@ const CommentItem = ({
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label="댓글 옵션 열기"
                   className="h-6 w-6 focus-visible:ring-0"
                   disabled={isUpdating || isDeleting}
                 >

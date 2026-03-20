@@ -98,11 +98,9 @@ const useInfiniteScroll = <T>({
     setIsLoading(true);
 
     try {
-      // setTimeout 테스트용
-      const [{ data: newData, hasMore: moreAvailable }] = await Promise.all([
-        fetchFnRef.current(pageRef.current),
-        new Promise(resolve => setTimeout(resolve, 700)),
-      ]);
+      const { data: newData, hasMore: moreAvailable } = await fetchFnRef.current(
+        pageRef.current,
+      );
 
       if (requestVersion !== requestVersionRef.current) return;
 
@@ -135,9 +133,8 @@ const useInfiniteScroll = <T>({
     }
 
     return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
+      if (currentTarget) observer.unobserve(currentTarget);
+      observer.disconnect();
     };
   }, [fetchMore]);
 

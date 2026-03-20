@@ -40,7 +40,7 @@ const SignupPage = () => {
               <div className="border-t border-white/10"></div>
               <SocialLoginButtons onClickSocialLogin={onClickSocialLogin} />
             </div>
-            <div className="mt-6 text-center text-sm text-gray-500">
+            <div className="mt-6 text-center text-sm text-gray-400">
               이미 계정이 있으신가요?
               <Link
                 href="/login"

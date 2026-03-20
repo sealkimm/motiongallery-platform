@@ -29,6 +29,7 @@ const ExampleCardActions = ({
       <button
         type="button"
         onClick={handleLike}
+        aria-label={isLiked ? `좋아요 취소, 현재 ${likeCount}개` : `좋아요, 현재 ${likeCount}개`}
         className="flex items-center gap-1 p-1 text-gray-400 transition-colors hover:text-red-500"
       >
         <Heart
@@ -41,6 +42,7 @@ const ExampleCardActions = ({
         <button
           type="button"
           onClick={handleComment}
+          aria-label={`댓글 ${commentCount ?? 0}개 보기`}
           className="flex items-center gap-1 p-1 text-gray-400 transition-colors hover:text-blue-500"
         >
           <MessageCircle size={iconSize} />
@@ -50,6 +52,7 @@ const ExampleCardActions = ({
       <button
         type="button"
         onClick={handleBookmark}
+        aria-label={isBookmarked ? '북마크 취소' : '북마크 추가'}
         className="flex items-center gap-1 p-1 text-gray-400 transition-colors hover:text-yellow-500"
       >
         <Bookmark

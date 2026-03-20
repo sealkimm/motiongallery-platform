@@ -53,14 +53,13 @@ const ExampleCard = ({
             <Image
               src={imageSrc}
               alt={example.title}
-              width={isHorizontal ? 120 : 320}
-              height={isHorizontal ? 120 : 160}
+              fill
               sizes={
                 isHorizontal
                   ? '(max-width: 768px) 33vw, 120px'
                   : '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw'
               }
-              className="h-full w-full object-cover"
+              className="object-cover"
               priority={priority}
               loading={priority ? 'eager' : 'lazy'}
             />

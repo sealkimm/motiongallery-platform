@@ -6,8 +6,8 @@ export const getCardStyles = (isHorizontal: boolean) => ({
     isHorizontal ? 'flex-row items-center' : 'flex-col',
   ),
   imageWrapper: cn(
-    'relative',
-    isHorizontal ? 'aspect-square h-full w-1/3' : 'h-40 w-full',
+    'relative shrink-0 overflow-hidden',
+    isHorizontal ? 'aspect-square w-1/3 self-stretch' : 'aspect-[2/1] w-full',
   ),
   title: cn(
     'line-clamp-1 font-semibold',

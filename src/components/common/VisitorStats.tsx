@@ -34,14 +34,14 @@ const VisitorStats = ({ className }: VisitorStatsProps) => {
     >
       <Users size={14} className="text-gray-400" />
       <div className="flex items-center gap-1.5">
-        <span className="text-xs text-gray-500">Today: </span>
+        <span className="text-xs text-gray-400">Today: </span>
         <span className="text-xs font-medium text-gray-300">
           {stats.today_visits}
         </span>
       </div>
       <div className="h-3 w-px bg-white/10"></div>
       <div className="flex items-center gap-1.5">
-        <span className="text-xs text-gray-500">Total: </span>
+        <span className="text-xs text-gray-400">Total: </span>
         <span className="text-xs font-medium text-gray-300">
           {stats.total_visits}
         </span>

@@ -149,7 +149,7 @@ const LoginPage = () => {
               <div className="border-t border-white/10"></div>
               <AuthSocialButtonGroups onClickSocialLogin={onClickSocialLogin} />
             </div>
-            <div className="mt-6 text-center text-sm text-gray-500">
+            <div className="mt-6 text-center text-sm text-gray-400">
               아직 계정이 없으신가요?
               <Link
                 href="/signup"

@@ -1,7 +1,7 @@
 'use client';
 
-import * as motion from 'motion/react-client';
 import { useInitialLoad } from '@/providers/InitialLoadProvider';
+import { cn } from '@/lib/utils';
 
 // import SearchBar from './SearchBar';
 
@@ -18,14 +18,13 @@ const HeroSection = () => {
         }}
       ></div>
       <div className="container relative max-w-4xl text-center">
-        <motion.div
-          initial={false}
-          animate={
-            isInitialLoadComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-          }
-          transition={
-            isInitialLoadComplete ? { duration: 0.8, delay: 0.2 } : { duration: 0 }
-          }
+        <div
+          className={cn(
+            'transition-all duration-700 ease-out motion-reduce:transition-none',
+            isInitialLoadComplete
+              ? 'translate-y-0 opacity-100 delay-200'
+              : 'translate-y-5 opacity-0',
+          )}
         >
           <h1 className="gradient-text mb-6 text-4xl font-bold md:text-6xl">
             모션 레퍼런스를 공유하는 공간
@@ -35,7 +34,7 @@ const HeroSection = () => {
             참고할 아이디어를 찾거나 직접 만든 레퍼런스를 함께 공유해보세요.
           </p>
           {/* <SearchBar /> */}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Sparkles, Tag as TagIcon } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import useAITag from '@/hooks/useAITag';
 import useExample from '@/hooks/useExample';
@@ -98,11 +97,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="fade-up-enter">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
@@ -249,7 +244,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
           <FormBtnGroup isEditMode={isEditMode} isLoading={isLoading} />
         </form>
       </Form>
-    </motion.div>
+    </div>
   );
 };
 
