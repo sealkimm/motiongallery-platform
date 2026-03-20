@@ -5,7 +5,6 @@ import { categories } from '@/features/category/data/categories';
 import { getExampleComments } from '@/features/comment/api/getExampleComments';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
-// import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
 import type { UserRelation } from '@/features/example/types/example';
 
 interface ExamplePageProps {
@@ -15,71 +14,41 @@ interface ExamplePageProps {
   };
 }
 
-// const relatedExamples = [
-//   {
-//     id: 'asdsafafsf',
-//     title: '관련 Example 1',
-//     description: 'Example 1 description',
-//     content: 'Example 1 content',
-//     created_by: '123',
-//     author: {
-//       id: 'asdasd',
-//       nickname: 'Example 1 Author',
-//       avatar_url: 'https://example.com/avatar.jpg',
-//     },
-//     created_at: '2025-01-01',
-//     thumbnail:
-//       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
-//     type: 'gsap',
-//     // like_count: 0,
-//   },
-
-//   {
-//     id: 'dfh,mdflkbmfdknkm',
-//     title: '관련 Example 2',
-//     description: 'Example 2 description',
-//     content: 'Example 2 content',
-//     created_by: '123',
-//     author: {
-//       id: 'asdasd',
-//       nickname: 'Example 2 Author',
-//       avatar_url: 'https://example.com/avatar.jpg',
-//     },
-//     created_at: '2025-01-02',
-//     thumbnail:
-//       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
-//     type: 'gsap',
-//     // like_count: 0,
-//   },
-// ];
-
 const ExamplePage = async ({ params }: ExamplePageProps) => {
   const { type, id } = await params;
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const category = categories.find(c => c.type === type);
 
-  const { data: example, error: exampleError } = await supabase
-    .from('examples')
-    .select(
-      `*, author:users(id, nickname, avatar_url), likes!left(user_id), bookmarks!left(user_id)`,
-    )
-    .eq('id', id)
-    .eq('type', type)
-    .single()
-    .then(({ data, error }) => ({
-      data: {
-        ...data,
-        isLiked: data.likes.some((i: UserRelation) => i.user_id === user?.id),
-        isBookmarked: data.bookmarks.some(
-          (i: UserRelation) => i.user_id === user?.id,
-        ),
-      },
-      error,
-    }));
+  const [userResult, exampleResult, commentResult] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase
+      .from('examples')
+      .select(
+        `*, author:users(id, nickname, avatar_url), likes!left(user_id), bookmarks!left(user_id)`,
+      )
+      .eq('id', id)
+      .eq('type', type)
+      .single(),
+    getExampleComments({
+      id,
+      page: 0,
+      pageSize: 10,
+    }),
+  ]);
+
+  const {
+    data: { user },
+  } = userResult;
+  const { data: rawExample, error: exampleError } = exampleResult;
+
+  const example = rawExample && {
+    ...rawExample,
+    isLiked: rawExample.likes.some((i: UserRelation) => i.user_id === user?.id),
+    isBookmarked: rawExample.bookmarks.some(
+      (i: UserRelation) => i.user_id === user?.id,
+    ),
+  };
 
   if (!category) {
     throw new Error(`카테고리를 찾을 수 없습니다: ${type}`);
@@ -89,17 +58,12 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     throw new Error('예제를 불러오지 못했습니다.');
   }
 
-  const isAuthor = user?.id === example?.author.id;
+  if (!example) {
+    throw new Error('예제를 찾을 수 없습니다.');
+  }
 
-  const {
-    data: comments,
-    hasMore,
-    totalCount,
-  } = await getExampleComments({
-    id,
-    page: 0,
-    pageSize: 10,
-  });
+  const isAuthor = user?.id === example?.author.id;
+  const { data: comments, hasMore, totalCount } = commentResult;
 
   return (
     <div className="pb-20 pt-24">
