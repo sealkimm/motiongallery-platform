@@ -5,7 +5,6 @@ import { categories } from '@/features/category/data/categories';
 import { getExampleComments } from '@/features/comment/api/getExampleComments';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
-import type { UserRelation } from '@/features/example/types/example';
 
 interface ExamplePageProps {
   params: {
@@ -24,9 +23,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     supabase.auth.getUser(),
     supabase
       .from('examples')
-      .select(
-        `*, author:users(id, nickname, avatar_url), likes!left(user_id), bookmarks!left(user_id)`,
-      )
+      .select(`*, author:users(id, nickname, avatar_url), likes(count)`)
       .eq('id', id)
       .eq('type', type)
       .single(),
@@ -42,12 +39,41 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
   } = userResult;
   const { data: rawExample, error: exampleError } = exampleResult;
 
+  let isLiked = false;
+  let isBookmarked = false;
+
+  if (user?.id) {
+    const [
+      { data: likedRows, error: likedError },
+      { data: bookmarkedRows, error: bookmarkedError },
+    ] = await Promise.all([
+      supabase
+        .from('likes')
+        .select('example_id')
+        .eq('user_id', user.id)
+        .eq('example_id', id)
+        .limit(1),
+      supabase
+        .from('bookmarks')
+        .select('example_id')
+        .eq('user_id', user.id)
+        .eq('example_id', id)
+        .limit(1),
+    ]);
+
+    if (likedError || bookmarkedError) {
+      throw new Error('사용자 상호작용 정보를 불러오지 못했습니다.');
+    }
+
+    isLiked = (likedRows?.length ?? 0) > 0;
+    isBookmarked = (bookmarkedRows?.length ?? 0) > 0;
+  }
+
   const example = rawExample && {
     ...rawExample,
-    isLiked: rawExample.likes.some((i: UserRelation) => i.user_id === user?.id),
-    isBookmarked: rawExample.bookmarks.some(
-      (i: UserRelation) => i.user_id === user?.id,
-    ),
+    likeCount: rawExample.likes?.[0]?.count ?? 0,
+    isLiked,
+    isBookmarked,
   };
 
   if (!category) {

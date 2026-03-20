@@ -54,14 +54,8 @@ export interface HomeExampleRow {
   comment_count: number;
 }
 
-export type UserRelation = {
-  user_id: string;
-};
-
 export interface RawExample extends Example {
   users: ExampleAuthor;
   comments: { count: number }[];
   likes: { count: number }[];
-  user_like: UserRelation[];
-  user_bookmark: UserRelation[];
 }

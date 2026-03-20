@@ -1,2 +1,2 @@
 export const EXAMPLE_SELECT =
-  '*, users(id,nickname,avatar_url), comments(count),likes(count), user_like:likes!left(user_id), user_bookmark:bookmarks!left(user_id)';
+  '*, users(id,nickname,avatar_url), comments(count), likes(count)';

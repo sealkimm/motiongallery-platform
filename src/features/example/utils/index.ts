@@ -9,16 +9,20 @@ import type {
 
 export const transformExampleData = (
   data: RawExample[],
-  userId?: string,
+  likedExampleIds: string[] = [],
+  bookmarkedExampleIds: string[] = [],
 ): ExampleDetails[] => {
+  const likedExampleIdSet = new Set(likedExampleIds);
+  const bookmarkedExampleIdSet = new Set(bookmarkedExampleIds);
+
   const result = data.map(
-    ({ users, comments, likes, user_like, user_bookmark, ...item }) => ({
+    ({ users, comments, likes, ...item }) => ({
       ...item,
       author: users,
       commentCount: comments?.[0]?.count ?? 0,
       likeCount: likes?.[0]?.count ?? 0,
-      isLiked: user_like?.some(i => i.user_id === userId) ?? false,
-      isBookmarked: user_bookmark?.some(i => i.user_id === userId) ?? false,
+      isLiked: likedExampleIdSet.has(item.id),
+      isBookmarked: bookmarkedExampleIdSet.has(item.id),
     }),
   );
   return result;
