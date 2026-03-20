@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     let mounted = true;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let timeoutId: number | null = null;
     let idleCallbackId: number | null = null;
 
     const syncProfile = async (authUser: SupabaseAuthUser) => {
@@ -165,7 +165,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       mounted = false;
       subscription.unsubscribe();
 
-      if (timeoutId) clearTimeout(timeoutId);
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
       if (idleCallbackId !== null && window.cancelIdleCallback) {
         window.cancelIdleCallback(idleCallbackId);
       }
