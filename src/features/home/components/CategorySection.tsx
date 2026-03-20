@@ -61,7 +61,6 @@ const CategorySection = ({
     <div
       ref={categorySectionRef}
       className="translate-y-24 opacity-0"
-      style={{ contentVisibility: 'auto', containIntrinsicSize: '720px' }}
     >
       <div className="mb-8 flex items-center justify-between">
         <div className="flex flex-col gap-3">
