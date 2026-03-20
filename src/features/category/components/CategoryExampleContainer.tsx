@@ -8,13 +8,13 @@ import EmptyState from '@/components/common/EmptyState';
 import CategorySearchBar from '@/features/category/components/CategorySearchBar';
 import { getExamplesByCategory } from '@/features/example/api/getCategoryExamples';
 import ExampleSection from '@/features/example/components/ExampleSection';
-import type { ExampleDetails } from '@/features/example/types/example';
+import type { ExampleCardData } from '@/features/example/types/example';
 
 import type { Category } from '../types/category';
 
 interface CategoryExampleContainerProps {
   category: Category;
-  examples: ExampleDetails[];
+  examples: ExampleCardData[];
   hasMore: boolean;
 }
 

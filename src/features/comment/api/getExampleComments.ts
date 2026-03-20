@@ -1,5 +1,6 @@
 'use server';
 
+import { normalizeComment, type RawCommentWithUser } from '@/features/comment/types/comment';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 interface GetExampleCommentsProps {
@@ -27,7 +28,9 @@ export const getExampleComments = async ({
 
   if (error) throw new Error(`댓글을 불러오지 못했습니다: ${error.message}`);
 
-  const pagedData = (data ?? []).slice(0, pageSize);
+  const pagedData = ((data ?? []) as RawCommentWithUser[])
+    .slice(0, pageSize)
+    .map(normalizeComment);
 
   return {
     data: pagedData,

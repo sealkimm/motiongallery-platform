@@ -20,7 +20,11 @@ import type { Dispatch, SetStateAction } from 'react';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
-import type { CommentWithUser } from '@/features/comment/types/comment';
+import {
+  normalizeComment,
+  type CommentWithUser,
+  type RawCommentWithUser,
+} from '@/features/comment/types/comment';
 
 import useSupabaseRequest from './useSupabaseRequest';
 
@@ -62,7 +66,10 @@ const useComment = ({
         })
         .select('*, author:users(id, nickname, avatar_url)')
         .single();
-      return result;
+      return {
+        ...result,
+        data: result.data ? normalizeComment(result.data as RawCommentWithUser) : null,
+      };
     },
     onSuccess: result => {
       setComments(prev => [result, ...prev]);
@@ -85,7 +92,10 @@ const useComment = ({
         .eq('id', commentId)
         .select('*, author:users(id, nickname, avatar_url)')
         .single();
-      return result;
+      return {
+        ...result,
+        data: result.data ? normalizeComment(result.data as RawCommentWithUser) : null,
+      };
     },
     onSuccess: result => {
       if (!result) return;

@@ -2,23 +2,29 @@ import { categories } from '@/features/category/data/categories';
 
 import type {
   ExampleCardData,
-  ExampleDetails,
+  ExampleAuthor,
   HomeExampleRow,
   RawExample,
 } from '../types/example';
 
+export const normalizeExampleAuthor = (
+  author: RawExample['author'],
+): ExampleAuthor => {
+  return Array.isArray(author) ? author[0] : author;
+};
+
 export const transformExampleData = (
-  data: RawExample[],
+  data: Array<Omit<RawExample, 'content'>>,
   likedExampleIds: string[] = [],
   bookmarkedExampleIds: string[] = [],
-): ExampleDetails[] => {
+): ExampleCardData[] => {
   const likedExampleIdSet = new Set(likedExampleIds);
   const bookmarkedExampleIdSet = new Set(bookmarkedExampleIds);
 
   const result = data.map(
     ({ author, comment_count, like_count, ...item }) => ({
       ...item,
-      author,
+      author: normalizeExampleAuthor(author),
       commentCount: comment_count ?? 0,
       likeCount: like_count ?? 0,
       isLiked: likedExampleIdSet.has(item.id),

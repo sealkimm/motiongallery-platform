@@ -55,7 +55,7 @@ export interface HomeExampleRow {
 }
 
 export interface RawExample extends Example {
-  author: ExampleAuthor;
+  author: ExampleAuthor | ExampleAuthor[];
   comment_count?: number;
   like_count?: number;
 }

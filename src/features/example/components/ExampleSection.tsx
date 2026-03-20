@@ -3,13 +3,13 @@
 import CardListAnimator from '@/components/animations/CardListAnimator';
 import type { Category } from '@/features/category/types/category';
 
-import type { ExampleDetails } from '../types/example';
+import type { ExampleCardData } from '../types/example';
 import ExampleCard from './ExampleCard';
 import ExampleSkeleton from './ExampleSkeleton';
 
 interface ExampleSectionProps {
   category: Category;
-  examples: ExampleDetails[];
+  examples: ExampleCardData[];
   isLoading: boolean;
   observerRef: React.RefObject<HTMLDivElement | null>;
 }

@@ -10,6 +10,28 @@ export interface Comment {
   replies?: CommentWithUser[];
 }
 
+export interface CommentAuthor
+  extends Pick<User, 'id' | 'nickname' | 'avatar_url'> {}
+
 export interface CommentWithUser extends Comment {
-  author: User;
+  author: CommentAuthor;
 }
+
+export interface RawCommentWithUser extends Comment {
+  author: CommentAuthor | CommentAuthor[];
+}
+
+export const normalizeCommentAuthor = (
+  author: RawCommentWithUser['author'],
+): CommentAuthor => {
+  return Array.isArray(author) ? author[0] : author;
+};
+
+export const normalizeComment = (
+  comment: RawCommentWithUser,
+): CommentWithUser => {
+  return {
+    ...comment,
+    author: normalizeCommentAuthor(comment.author),
+  };
+};

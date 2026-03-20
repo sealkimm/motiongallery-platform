@@ -5,6 +5,7 @@ import { categories } from '@/features/category/data/categories';
 import { getExampleComments } from '@/features/comment/api/getExampleComments';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
+import { normalizeExampleAuthor } from '@/features/example/utils';
 
 interface ExamplePageProps {
   params: {
@@ -86,6 +87,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const example = rawExample && {
     ...rawExample,
+    author: normalizeExampleAuthor(rawExample.author),
     commentCount: rawExample.comment_count ?? 0,
     likeCount: rawExample.like_count ?? 0,
     isLiked,
