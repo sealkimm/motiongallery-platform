@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import type { Category } from '@/features/category/types/category';
-import type { ExampleDetails } from '@/features/example/types/example';
+import type { ExampleCardData } from '@/features/example/types/example';
 
 import { Card, CardContent } from '../../../components/ui/card';
 import { getCardStyles } from './ExampleCard.styles';
@@ -14,7 +14,7 @@ const DEFAULT_THUMBNAIL = '/default-thumbnail.png';
 
 interface ExampleCardProps {
   category: Category;
-  example: ExampleDetails;
+  example: ExampleCardData;
   layout?: 'horizontal' | 'vertical';
   priority?: boolean;
 }

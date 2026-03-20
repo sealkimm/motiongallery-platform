@@ -1,29 +1,11 @@
-import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { EXAMPLE_SELECT } from '@/features/example/constants/exampleSelect';
-import {
-  groupExamplesByCategory,
-  transformExampleData,
-} from '@/features/example/utils';
+import { getHomeExamples } from '@/features/example/api/getHomeExamples';
 import CategorySection from '@/features/home/components/CategorySection';
 import HeroSection from '@/features/home/components/HeroSection';
 
 export const dynamic = 'force-dynamic';
 
 const HomePage = async () => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data, error } = await supabase
-    .from('examples')
-    .select(EXAMPLE_SELECT)
-    .order('created_at', { ascending: false });
-
-  if (error) throw new Error('예제 목록을 불러오지 못했습니다.');
-
-  const examples = transformExampleData(data, user?.id);
-  const examplesByCategory = groupExamplesByCategory(examples);
+  const examplesByCategory = await getHomeExamples();
 
   return (
     <>
