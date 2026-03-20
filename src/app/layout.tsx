@@ -3,12 +3,11 @@ import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
 
+import AppThemeProvider from '@/providers/AppThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 
 import FloatingAddButton from '@/components/button/FloatingAddButton';
 import { Toaster } from '@/components/ui/sonner';
-
-import Theme from '../providers/theme-provider';
 
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
@@ -29,13 +28,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-black text-white`}>
         <AuthProvider>
-          <Theme>
+          <AppThemeProvider>
             <Toaster position="top-center" />
             <div className="flex min-h-screen flex-col bg-background text-foreground">
               {children}
             </div>
             <FloatingAddButton />
-          </Theme>
+          </AppThemeProvider>
         </AuthProvider>
       </body>
     </html>

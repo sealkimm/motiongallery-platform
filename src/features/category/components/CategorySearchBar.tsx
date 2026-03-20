@@ -9,7 +9,7 @@ interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
-const SearchBar = ({ category, onSearch }: SearchBarProps) => {
+const CategorySearchBar = ({ category, onSearch }: SearchBarProps) => {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSearch(e.target.value);
   };
@@ -29,4 +29,4 @@ const SearchBar = ({ category, onSearch }: SearchBarProps) => {
   );
 };
 
-export default SearchBar;
+export default CategorySearchBar;

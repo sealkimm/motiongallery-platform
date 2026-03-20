@@ -1,7 +1,5 @@
 'use client';
 
-// import SearchBar from './SearchBar';
-
 const HeroSection = () => {
   return (
     <div className="relative pb-28 pt-48">
@@ -24,7 +22,6 @@ const HeroSection = () => {
             GSAP, Three.js, CSS로 만든 다양한 인터랙션 예제를 살펴보고 작업에
             참고할 아이디어를 찾거나 직접 만든 레퍼런스를 함께 공유해보세요.
           </p>
-          {/* <SearchBar /> */}
         </div>
       </div>
     </div>

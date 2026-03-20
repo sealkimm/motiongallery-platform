@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from 'next-themes';
 
-const Theme = ({ children }: { children: React.ReactNode }) => {
+const AppThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeProvider
       attribute="class"
@@ -15,4 +15,4 @@ const Theme = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Theme;
+export default AppThemeProvider;

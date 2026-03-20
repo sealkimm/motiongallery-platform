@@ -5,7 +5,7 @@ import { useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import EmptyState from '@/components/common/EmptyState';
-import SearchBar from '@/features/category/components/SearchBar';
+import CategorySearchBar from '@/features/category/components/CategorySearchBar';
 import { getExamplesByCategory } from '@/features/example/api/getCategoryExamples';
 import ExampleSection from '@/features/example/components/ExampleSection';
 import type { ExampleDetails } from '@/features/example/types/example';
@@ -60,7 +60,7 @@ const CategoryExampleContainer = ({
 
   return (
     <>
-      <SearchBar category={category} onSearch={setSearchQuery} />
+      <CategorySearchBar category={category} onSearch={setSearchQuery} />
       {isEmptyData ? (
         <EmptyState {...emptyStateProps} />
       ) : (

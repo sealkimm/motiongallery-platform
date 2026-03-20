@@ -2,10 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
+import { Card, CardContent } from '@/components/ui/card';
 import type { Category } from '@/features/category/types/category';
 import type { ExampleCardData } from '@/features/example/types/example';
 
-import { Card, CardContent } from '../../../components/ui/card';
 import { getCardStyles } from './ExampleCard.styles';
 import ExampleCardInteractiveActions from './ExampleCardInteractiveActions';
 import WriterInfo from './WriterInfo';

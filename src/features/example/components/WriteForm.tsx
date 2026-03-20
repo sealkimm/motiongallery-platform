@@ -31,8 +31,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { categories } from '@/features/category/data/categories';
 import type { Example } from '@/features/example/types/example';
+import Tag from '@/components/tag/Tag';
 
-import Tag from '../../../components/tag/Tag';
 import { formSchema, type FormValues } from '../formSchema';
 
 const MarkdownEditor = dynamic(
