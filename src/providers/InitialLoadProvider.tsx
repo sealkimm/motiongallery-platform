@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface InitialLoadContextValue {
   isInitialLoadComplete: boolean;
@@ -10,14 +11,20 @@ interface InitialLoadContextValue {
 const InitialLoadContext = createContext<InitialLoadContextValue | null>(null);
 
 const InitialLoadProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
+  const pathname = usePathname();
+  const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(
+    () => pathname !== '/',
+  );
+  const completeInitialLoad = useCallback(() => {
+    setIsInitialLoadComplete(true);
+  }, []);
 
   const value = useMemo(
     () => ({
       isInitialLoadComplete,
-      completeInitialLoad: () => setIsInitialLoadComplete(true),
+      completeInitialLoad,
     }),
-    [isInitialLoadComplete],
+    [completeInitialLoad, isInitialLoadComplete],
   );
 
   return (

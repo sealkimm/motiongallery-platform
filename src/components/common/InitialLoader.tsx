@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 import { useInitialLoad } from '@/providers/InitialLoadProvider';
 
@@ -16,11 +17,18 @@ const waitForNextPaint = () =>
   });
 
 const InitialLoader = () => {
+  const pathname = usePathname();
   const [isLeaving, setIsLeaving] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
   const { completeInitialLoad } = useInitialLoad();
+  const shouldShowInitialLoader = pathname === '/';
 
   useEffect(() => {
+    if (!shouldShowInitialLoader) {
+      document.body.dataset.initialLoading = 'false';
+      return;
+    }
+
     const startedAt = performance.now();
     document.body.dataset.initialLoading = 'true';
 
@@ -67,9 +75,9 @@ const InitialLoader = () => {
       if (revealTimer) clearTimeout(revealTimer);
       if (unmountTimer) clearTimeout(unmountTimer);
     };
-  }, []);
+  }, [completeInitialLoad, shouldShowInitialLoader]);
 
-  if (!isMounted) return null;
+  if (!shouldShowInitialLoader || !isMounted) return null;
 
   return (
     <div
