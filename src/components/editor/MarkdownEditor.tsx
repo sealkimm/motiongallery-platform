@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { commands, type ICommand } from '@uiw/react-md-editor';
 
-import { removeAllowTransparency } from '@/lib/utils';
+import { sanitizeMarkdownContent } from '@/lib/utils';
 import useIsMobile from '@/hooks/useIsMobile';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
@@ -35,7 +35,7 @@ const extraCommands: ICommand[] = [
 
 const MarkdownEditor = ({ value, onChange }: MarkdownEditorProps) => {
   const isMobile = useIsMobile();
-  const cleanedValue = removeAllowTransparency(value);
+  const cleanedValue = sanitizeMarkdownContent(value);
 
   return (
     <div className="md-editor-container">

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import '@uiw/react-markdown-preview/markdown.css';
 
-import { removeAllowTransparency } from '@/lib/utils';
+import { sanitizeMarkdownContent } from '@/lib/utils';
 
 /////////???????????
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
@@ -16,7 +16,7 @@ interface MarkdownViewerProps {
 }
 
 const MarkdownViewer = ({ content }: MarkdownViewerProps) => {
-  const cleanedContent = removeAllowTransparency(content);
+  const cleanedContent = sanitizeMarkdownContent(content);
 
   return (
     <div className="mb-10">

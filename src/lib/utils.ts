@@ -12,6 +12,17 @@ export const removeAllowTransparency = (value: string) => {
     .replace(/\s*allowTransparency\s*(=\s*(['"])?.*?\2)?/g, '');
 };
 
+// markdown preview에서 실행 불가능한 script 태그를 제거
+export const removeScriptTags = (value: string) => {
+  return value
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gis, '')
+    .replace(/<script\b[^>]*\/>/gi, '');
+};
+
+export const sanitizeMarkdownContent = (value: string) => {
+  return removeScriptTags(removeAllowTransparency(value));
+};
+
 // 예제 썸네일 추출 (코드펜, 코드샌드박스만 있음)
 export const extractThumbnailUrl = (content: string) => {
   const match = content.match(/<iframe[^>]+src="([^"]+)"[^>]*>/);
