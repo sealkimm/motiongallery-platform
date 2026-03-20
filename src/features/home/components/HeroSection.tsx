@@ -1,30 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
-
-import { gsap, useGSAP } from '@/lib/gsap';
-
 // import SearchBar from './SearchBar';
 
 const HeroSection = () => {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (!contentRef.current) return;
-
-      gsap.to(contentRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power3.out',
-      });
-    },
-    {
-      scope: contentRef,
-    },
-  );
-
   return (
     <div className="relative pb-28 pt-48">
       <div
@@ -35,7 +13,10 @@ const HeroSection = () => {
         }}
       ></div>
       <div className="container relative max-w-4xl text-center">
-        <div ref={contentRef} className="translate-y-5 opacity-0">
+        <div
+          className="fade-up-enter"
+          style={{ animationDelay: '120ms' }}
+        >
           <h1 className="gradient-text mb-6 text-4xl font-bold md:text-6xl">
             모션 레퍼런스를 공유하는 공간
           </h1>
