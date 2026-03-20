@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
 
-import VisitorStats from '@/components/common/VisitorStats';
-
 import AuthButtons from './AuthButtons';
 import CategoryNav from './CategoryNav';
 import MobileMenu from './MobileMenu';
@@ -30,7 +28,6 @@ const MainHeader = () => {
             <Link href="/" className="relative text-2xl font-bold">
               <span className="gradient-text">Motion Gallery</span>
             </Link>
-            <VisitorStats className="hidden xl:flex" />
           </div>
           <div className="relative flex items-center">
             <CategoryNav activeCategory={activeCategory} />

@@ -6,7 +6,6 @@ import '@/styles/globals.css';
 import { AuthProvider } from '@/providers/AuthProvider';
 
 import FloatingAddButton from '@/components/button/FloatingAddButton';
-import VisitorTracker from '@/components/common/VisitorTracker';
 import { Toaster } from '@/components/ui/sonner';
 
 import Theme from '../providers/theme-provider';
@@ -31,7 +30,6 @@ export default function RootLayout({
       <body className={`${inter.className} bg-black text-white`}>
         <AuthProvider>
           <Theme>
-            <VisitorTracker />
             <Toaster position="top-center" />
             <div className="flex min-h-screen flex-col bg-background text-foreground">
               {children}

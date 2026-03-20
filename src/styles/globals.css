@@ -129,6 +129,11 @@ body {
   transform-origin: center;
 }
 
+.loading-progress {
+  transform-origin: left center;
+  animation: loading-progress 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
 @keyframes fade-up-enter {
   from {
     opacity: 0;
@@ -162,10 +167,26 @@ body {
   }
 }
 
+@keyframes loading-progress {
+  0% {
+    transform: scaleX(0.08);
+    opacity: 0.35;
+  }
+  55% {
+    transform: scaleX(0.72);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-up-enter,
   .fade-down-enter,
-  .floating-add-button-enter {
+  .floating-add-button-enter,
+  .loading-progress {
     animation: none !important;
     transition: none !important;
   }
