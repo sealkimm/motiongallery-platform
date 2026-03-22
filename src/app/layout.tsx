@@ -17,6 +17,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Motion Gallery - 애니메이션 및 모션 효과 갤러리',
   description: 'GSAP, Three.js, CSS 및 기타 기술을 활용한 애니메이션 예제 모음',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
