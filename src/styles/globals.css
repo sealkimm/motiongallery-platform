@@ -132,7 +132,7 @@ body {
 
 .loading-progress {
   transform-origin: left center;
-  animation: loading-progress 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation: loading-progress 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
 @keyframes fade-up-enter {
