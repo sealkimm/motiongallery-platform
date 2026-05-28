@@ -40,6 +40,7 @@ const MarkdownEditor = ({ value, onChange }: MarkdownEditorProps) => {
   return (
     <div className="md-editor-container">
       <MDEditor
+        data-color-mode="dark"
         value={cleanedValue}
         onChange={onChange}
         commands={customCommands}

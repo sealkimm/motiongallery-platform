@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
+
 import '@/styles/globals.css';
 
 import AppThemeProvider from '@/providers/AppThemeProvider';

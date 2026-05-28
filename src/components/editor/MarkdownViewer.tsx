@@ -2,8 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-import '@uiw/react-markdown-preview/markdown.css';
-
 import { sanitizeMarkdownContent } from '@/lib/utils';
 
 /////////???????????
@@ -21,7 +19,7 @@ const MarkdownViewer = ({ content }: MarkdownViewerProps) => {
   return (
     <div className="mb-10">
       <div className="md-viewer-container">
-        <MarkdownPreview source={cleanedContent} />
+        <MarkdownPreview data-color-mode="dark" source={cleanedContent} />
       </div>
     </div>
   );
